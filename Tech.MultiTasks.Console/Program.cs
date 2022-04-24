@@ -12,6 +12,24 @@ namespace Tech.MultiTasks.Console
         {
             int ite = 100;
             int currentFileCount = 0;
+
+
+            Commands cmd = new Commands(@"C:\Code\CSV\AccidentsReport\AccidentsUI\Data\commands.txt");
+
+            while(cmd.runTask)
+            {
+                for (int i = 0; i < cmd.FileContent; i++)
+                {
+                    System.Console.WriteLine("Shalom");
+                }
+                System.Threading.Thread.Sleep(5000);
+                if(cmd.FileContent == 0)
+                {
+                    cmd.runTask = false;
+                }
+            }
+
+
             DirectoryListener listener = new DirectoryListener(@"C:\Code\CSV\AccidentsReport\AccidentsUI\Data\");
             while(listener.IsRunning)
             {
