@@ -12,7 +12,7 @@ namespace Tech.MultiTask.UI
 {
     public partial class Form1 : Form
     {
-        
+        FilePlay play = new FilePlay(@"c:\a\");
         public Form1()
         {
             InitializeComponent();
@@ -20,32 +20,44 @@ namespace Tech.MultiTask.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FilePlay play = new FilePlay(textBox1.Text);
+           
             play.CreateTask_Creation();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FilePlay play = new FilePlay(textBox1.Text);
+            
             play.CreateTask_Delete();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            FilePlay play = new FilePlay(textBox1.Text);
+            
             play.CreateMultiTask_Creation();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            FilePlay play = new FilePlay(textBox1.Text);
+             
             play.CreateMultiTask_Delete();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            FilePlay play = new FilePlay(textBox1.Text);
+            
             play.CreateTask_Weather(textBox2.Text);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+             
+            play.Auto(textBox2.Text);
+            play.AutoRead();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            button7.Text = play.requests.Count.ToString();
         }
     }
 }

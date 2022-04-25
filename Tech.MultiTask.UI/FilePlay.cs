@@ -10,6 +10,7 @@ namespace Tech.MultiTask.UI
 {
     public class FilePlay
     {
+        public bool RunAuto = true;
         private static string fileCritical = "*";
         private static string fileCritical1 = "*";
         public const int MultiCount = 100;
@@ -21,6 +22,7 @@ namespace Tech.MultiTask.UI
             
         }
 
+        public Stack<Rootobject> requests = new Stack<Rootobject>();
         public async Task<string> GetCityData(string cityname)
         {
             string str = "";
@@ -56,6 +58,43 @@ namespace Tech.MultiTask.UI
             });
 
         }
+
+        public Task AutoRead()
+        {
+            return Task.Factory.StartNew(() => {
+
+                while (RunAuto)
+                {
+                    string[] list = System.IO.Directory.GetFiles(Folder);
+                    foreach (string file in list)
+                    {
+                        string j = System.IO.File.ReadAllText(file);
+
+                        Rootobject weatherObj = System.Text.Json.JsonSerializer.Deserialize<Rootobject>(j);
+
+                        requests.Push(weatherObj);
+
+                        System.IO.File.Delete(file);
+                    }
+                    System.Threading.Thread.Sleep(30000);
+                }
+
+            });
+        }
+
+        public Task Auto(string city)
+        {
+            return Task.Factory.StartNew(() => {
+
+                while (RunAuto)
+                {
+                    CreateTask_Weather(city);
+                    System.Threading.Thread.Sleep(10000);
+                }
+
+            });
+        }
+
         public Task CreateMultiTask_Creation()
         {
             return Task.Factory.StartNew(() => {
