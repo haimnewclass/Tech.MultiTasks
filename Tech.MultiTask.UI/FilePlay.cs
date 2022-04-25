@@ -9,12 +9,14 @@ namespace Tech.MultiTask.UI
     public class FilePlay
     {
         private static string fileCritical = "*";
+        private static string fileCritical1 = "*";
         public const int MultiCount = 100;
         private Random random = new Random();
         public string Folder { get; set; }
         public FilePlay(string folderName)
         {
             Folder = folderName;
+            
         }
         
         public Task CreateMultiTask_Creation()
@@ -40,18 +42,27 @@ namespace Tech.MultiTask.UI
 
         protected string GenerateFileName()
         {
-            return $"{Folder}{random.Next(1, 1000)}.txt";
+            return $"{Folder}{random.Next(1, MultiCount)}.txt";
         }
         public Task CreateTask_Creation()
         {
             Task ret = Task.Factory.StartNew(() => {
                 string fName = GenerateFileName();
-                
+
+                lock (fileLocks)
+                {
+                    if (!fileLocks.ContainsKey(fName))
+                    {
+                        fileLocks.Add(fName, "*");
+                    }
+                }
+
                 if (!System.IO.File.Exists(fName))
                 {
-                    lock (fileCritical)
+                    lock (fileLocks[fName])
                     {
                         System.IO.File.WriteAllText(fName, "*");
+                      
                     }
                 }
                 
@@ -60,6 +71,7 @@ namespace Tech.MultiTask.UI
 
             return ret;
         }
+        System.Collections.Generic.Dictionary<string, string> fileLocks = new Dictionary<string, string>();
 
         public Task CreateTask_Delete()
         {
@@ -68,7 +80,15 @@ namespace Tech.MultiTask.UI
 
                 if (System.IO.File.Exists(fName))
                 {
-                    lock(fileCritical)
+                    lock(fileLocks)
+                    {
+                        if (!fileLocks.ContainsKey(fName))
+                        {
+                            fileLocks.Add(fName, "*");
+                        }
+                    }
+
+                    lock (fileLocks[fName])
                     { 
                         // criticat section
                         System.IO.File.Delete(fName);
