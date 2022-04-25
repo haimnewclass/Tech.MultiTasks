@@ -29,5 +29,17 @@ namespace Tech.MultiTask.UI
             FilePlay play = new FilePlay(textBox1.Text);
             play.CreateTask_Delete();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FilePlay play = new FilePlay(textBox1.Text);
+            play.CreateMultiTask_Creation();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            FilePlay play = new FilePlay(textBox1.Text);
+            play.CreateMultiTask_Delete();
+        }
     }
 }
