@@ -12,7 +12,7 @@ namespace Tech.MultiTask.UI
 {
     public partial class Form1 : Form
     {
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +40,12 @@ namespace Tech.MultiTask.UI
         {
             FilePlay play = new FilePlay(textBox1.Text);
             play.CreateMultiTask_Delete();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            FilePlay play = new FilePlay(textBox1.Text);
+            play.CreateTask_Weather(textBox2.Text);
         }
     }
 }

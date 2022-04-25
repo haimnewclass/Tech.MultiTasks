@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Tech.MultiTask.UI
 {
@@ -18,7 +20,42 @@ namespace Tech.MultiTask.UI
             Folder = folderName;
             
         }
-        
+
+        public async Task<string> GetCityData(string cityname)
+        {
+            string str = "";
+            using (var client = new HttpClient())
+            {
+
+                client.BaseAddress = new Uri("https://api.weatherapi.com");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //GET Method
+                HttpResponseMessage response = await client.GetAsync(@"/v1/current.json?key=b480e7a490374b44be472511222103&q=" + cityname + "&aqi=no%22");
+                if (response.IsSuccessStatusCode)
+                {
+                    str = await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    Console.WriteLine("Internal server Error");
+                }
+
+            }
+
+            return str;
+        }
+        public  Task CreateTask_Weather(string city)
+        {
+            return Task.Factory.StartNew(async () => {
+                string val = await GetCityData(city);
+
+                string filename = $"{Folder}{Guid.NewGuid()}.txt";
+
+                System.IO.File.WriteAllText(filename, val);
+            });
+
+        }
         public Task CreateMultiTask_Creation()
         {
             return Task.Factory.StartNew(() => {
