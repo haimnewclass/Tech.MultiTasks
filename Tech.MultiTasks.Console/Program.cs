@@ -28,6 +28,7 @@ namespace Tech.MultiTasks.Console
                      orderby num
                      select num*num + 10;
 
+            
 
             List<Ball> list = new List<Ball>();
             list.Add(new Ball() { name = "Fifa", size = 5 });
@@ -37,7 +38,6 @@ namespace Tech.MultiTasks.Console
             var q3 = from i in list
                      where i.size == 7
                      select i;
-
 
             var list3 =  q3.ToList<Ball>();
             

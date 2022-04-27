@@ -59,5 +59,13 @@ namespace Tech.MultiTask.UI
         {
             button7.Text = play.requests.Count.ToString();
         }
+
+        private void Linq(object sender, EventArgs e)
+        {
+            var q = from i in play.requests
+                    where i.current.humidity > 20
+                    select i;
+            MessageBox.Show($" {q.ToArray().Length} Requests have Humidity >20 ");
+        }
     }
 }
